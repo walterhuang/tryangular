@@ -1,0 +1,79 @@
+﻿@model IList<TryAngular.Models.CartItem>
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-sanitize.js"></script>
+    <script src="~/Scripts/Sites.js"></script>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+</head>
+<body ng-controller="MainCtrl">
+    <h1>My First AngryJS App</h1>
+    <hr>
+    Name: <select ng-model="ProductName" ng-options="o for o in namelist"></select>
+    @*<input type="text" ng-model="ProductName">*@
+    <br>
+    Price: <input type="number" ng-model="ProductPrice">
+    <br>
+    Qty: 
+    <select ng-model="Qty" ng-options="num for num in qtyrange"></select>
+    @*<input type="number" ng-model="Qty" ng-init="Qty=5">*@
+    <br>
+
+    <input type="button" value="Add to Cart" ng-click="addToCart()">
+    <input type="button" value="Update">
+    <input type="button" value="Undo" ng-click="Undo()">
+    <hr>
+    {{ProductName}}
+    <br>
+    Price: {{ProductPrice|currency}} * Qty: {{Qty}} = Subtotal
+    {{getDiscountPrice()|currency}}
+    <br>
+
+    Search:
+    <select ng-model="keyword" ng-options="o.Name for o in data"></select>
+    @*<input type="text" ng-model="keyword" />*@
+    <textarea ng-model="aa"></textarea>
+    {{aa|linky}}
+    <span ng-bind-html="aa | linky"></span>
+    <table class="table">
+        <tr>
+            <td>Delete</td>
+            <td>#</td>
+            <td>Product Name</td>
+            <td>Price</td>
+            <td>Qty</td>
+            <td>Subtotal</td>
+            <td><input type="button" value="Remove All" ng-click="removeAllFromCart()"></td>
+        </tr>
+        <tr ng-repeat="item in data | filter:keyword">
+            <td><input type="checkbox" ng-model="item.IsDelete">{{item.IsDelete}}</td>
+            <td>{{$index+1}}</td>
+            <td>{{item.Name}}</td>
+            <td>{{item.Price}}</td>
+            <td>{{item.Qty}}</td>
+            <td>{{getSubtotal(item.Price, item.Qty)}} </td>
+            <td><input type="button" value="Remove" ng-click="removeFromCart($index, getSubtotal(item.Price, item.Qty))"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td>{{Total}}</td>
+            <td></td>
+        </tr>
+    </table>
+    <input type="button" value="Save" ng-click="Save()" />
+</body>
+</html>
